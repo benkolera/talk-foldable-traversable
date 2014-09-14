@@ -5,12 +5,15 @@
 
 (defun slide-init-slides ()
   (select-window (slide-slide-window))
+  (setq org-src-fontify-natively t)
+  ;; fontify stuff doesn't come into effect unless you reload, so lets
+  ;; do that.
+  (revert-buffer t t)
   (beginning-of-buffer)
   (org-cycle)
   (org-narrow-to-subtree)
   (text-scale-set 3)
   (fci-mode 0)
-  (setq org-src-fontify-natively t)
   ;; If this weren't a dodgy hack, I'd find a way to make this buffer
   ;; local
   (set-face-attribute 'org-level-1 nil :height 2.0)
@@ -28,6 +31,8 @@
   (run-haskell)
   (select-window (slide-haskell-window))
   (text-scale-set 3)
+  (fci-mode 0)
+  (evil-emacs-state)
   (slide-normal-layout))
 
 (defun slide-move (n move)
@@ -69,9 +74,10 @@
 
 (defun run-haskell-line-or-region ()
   (interactive)
-  (inferior-haskell-send-command
-   (inferior-haskell-process)
-   (get-line-or-region)))
+  (slide-haskell-send-command (get-line-or-region)))
+
+(defun slide-haskell-send-command (cmd)
+  (inferior-haskell-send-command (inferior-haskell-process) cmd))
 
 (defun get-line-or-region ()
   (let ((start (if (use-region-p) (mark) (point-at-bol)))

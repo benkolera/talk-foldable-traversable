@@ -2,15 +2,14 @@
 
 (Why typeclasses are awesome)
 
- +---------------------------------------+
- | Lightning Talk for the:               |
- | Brisbane Functional Programming Group |
- | 2014-09-23                            |
- +---------------------------------------+
+ Lightning Talk for the:
+ [[http://bfpg.org/][Brisbane Functional Programming Group]]
+ 2014-09-23
 
 [[http://twitter.com/benkolera][Ben Kolera (@benkolera)]]
 
 * Typeclasses
+
              +----------+             +---------+
              | Foldable |        -----+ Functor |
              +----+-----+       /     +----+----+
@@ -28,6 +27,7 @@
                                       |  Monad  |
                                       +---------+
 * Foldable
+
 #+BEGIN_SRC haskell
 import Data.Foldable
 fold ["ab","c","def"]
