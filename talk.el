@@ -74,7 +74,12 @@
 
 (defun run-haskell-line-or-region ()
   (interactive)
-  (slide-haskell-send-command (get-line-or-region)))
+  (let ((select (get-line-or-region)))
+    (if (> (length (split-string select "\n" t)) 1)
+      (slide-haskell-send-command (concat ":{ \n" select ":}"))
+      (progn
+        (message select)
+        (slide-haskell-send-command select)))))
 
 (defun slide-haskell-send-command (cmd)
   (inferior-haskell-send-command (inferior-haskell-process) cmd))

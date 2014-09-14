@@ -28,9 +28,15 @@
                                       +---------+
 * Foldable
 
+Something that has foldr (or foldMap)
+
 #+BEGIN_SRC haskell
-import Data.Foldable
-fold ["ab","c","def"]
+fold ["ab","c"]
+
+instance Foldable [] where
+  foldr :: (a -> b -> b) -> b -> [a] -> b
+  foldr f z []     = z
+  foldr f z (x:xs) = x `f` foldr f z xs
 #+END_SRC
 * And this
   And more stuff
