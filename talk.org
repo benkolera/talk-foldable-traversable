@@ -1,0 +1,31 @@
+* Foldable & Traversable
+
+(Why typeclasses are awesome)
+
+Lightning Talk for the [[http://bfpg.org][Brisbane Functional Programming Group]]
+
+[[http://twitter.com/benkolera][Ben Kolera (@benkolera)]] 2014-09-23
+
+* Typeclasses
+             +----------+             +---------+
+             | Foldable |        -----+ Functor |
+             +----+-----+       /     +----+----+
+                  |            /           |
+                  |     +-----/            |
+                  |     |                  |
+                  v     v                  v
+            +-------------+         +-------------+
+            | Traversable |         | Applicative |
+            +-------------+         +------+------+
+                                           |
+                                           |
+                                           v
+                                      +---------+
+                                      |  Monad  |
+                                      +---------+
+* Foldable
+#+BEGIN_SRC haskell
+fold ["ab","c","def"]
+#+END_SRC
+* And this
+  And more stuff
