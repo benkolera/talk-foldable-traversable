@@ -27,6 +27,7 @@
 (defun slide-init-haskell ()
   (run-haskell)
   (select-window (slide-haskell-window))
+  (text-scale-set 3)
   (slide-normal-layout))
 
 (defun slide-move (n move)
@@ -39,11 +40,11 @@
 
 (defun slide-next (n)
   (interactive "^p")
-  (move-slide n (lambda () (outline-next-visible-heading 1))))
+  (slide-move n (lambda () (outline-next-visible-heading 1))))
 
 (defun slide-prev (n)
   (interactive "^p")
-  (move-slide n (lambda () (outline-previous-visible-heading 1))))
+  (slide-move n (lambda () (outline-previous-visible-heading 1))))
 
 (defun slide-maximize-haskell ()
   (interactive)
@@ -52,9 +53,11 @@
 
 (defun slide-normal-layout ()
   (interactive)
+  (run-haskell)
   (select-window (slide-haskell-window))
   (minimize-window)
-  (window-resize nil 3 nil))
+  (window-resize nil 3 nil)
+  (select-window (slide-slide-window)))
 
 (defun slide-slide-window ()
   ;; TODO This is a giant turd.
