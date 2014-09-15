@@ -1,6 +1,6 @@
 * Foldable & Traversable
 
-(Why typeclasses are awesome)
+(Building upon abstractions; Haskell Style)
 
  Lightning Talk for the:
  [[http://bfpg.org/][Brisbane Functional Programming Group]]
@@ -9,12 +9,12 @@
 [[http://twitter.com/benkolera][Ben Kolera (@benkolera)]]
 
 * Typeclasses
-
+#+BEGIN_SRC ditaa :file images/typeclasses.png
              +----------+             +---------+
-             | Foldable |        -----+ Functor |
-             +----+-----+       /     +----+----+
-                  |            /           |
-                  |     +-----/            |
+             | Foldable |      +------+ Functor |
+             +----+-----+      |      +----+----+
+                  |            |           |
+                  |     +------+           |
                   |     |                  |
                   v     v                  v
             +-------------+         +-------------+
@@ -26,6 +26,12 @@
                                       +---------+
                                       |  Monad  |
                                       +---------+
+#+END_SRC
+
+#+RESULTS:
+[[file:images/typeclasses.png]]
+
+
 * Foldable
 
 Something that has foldr (or foldMap)

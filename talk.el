@@ -1,3 +1,15 @@
+;; Notes
+;; - Need ditaa installed and set up in org mode to generate images
+;;   from ascii diagrams
+;; - Probably want to make the org face changes a theme so that they
+;;   can be unloaded later.
+;; - Can probably hook into whatever ditaa uses with babel to run an
+;;   entire haskell code block with C-c C-c as well as the existing
+;;   by line and by region stuff.
+;; - PDF / HTML generation should not be too much of a stretch.
+;; - Probably want some kind of shortcut for adding a new slide so you
+;;   don't have to widen and add things yourself.
+
 (defun slide-init ()
   (interactive)
   (slide-init-haskell)
