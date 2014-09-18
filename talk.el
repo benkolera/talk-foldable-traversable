@@ -1,6 +1,7 @@
 ;; Notes
 ;; - Need ditaa installed and set up in org mode to generate images
 ;;   from ascii diagrams
+;; Todo
 ;; - Probably want to make the org face changes a theme so that they
 ;;   can be unloaded later.
 ;; - Can probably hook into whatever ditaa uses with babel to run an
@@ -47,8 +48,12 @@
   (evil-emacs-state)
   (slide-normal-layout))
 
+(defun slide-first ()
+  (beginning-of-buffer)
+)
+
 (defun slide-move (n move)
-   (ignore-errors (outline-up-heading nil))
+   (outline-back-to-heading)
    (org-cycle)
    (widen)
    (dotimes (i n) (funcall move))
@@ -73,7 +78,7 @@
   (run-haskell)
   (select-window (slide-haskell-window))
   (minimize-window)
-  (window-resize nil 3 nil)
+  (window-resize nil 4 nil)
   (select-window (slide-slide-window)))
 
 (defun slide-slide-window ()
@@ -86,12 +91,13 @@
 
 (defun run-haskell-line-or-region ()
   (interactive)
-  (let ((select (get-line-or-region)))
+  (let ((select (get-line-or-region))
+        (proc (inferior-haskell-process)))
     (if (> (length (split-string select "\n" t)) 1)
-      (slide-haskell-send-command (concat ":{ \n" select ":}"))
       (progn
-        (message select)
-        (slide-haskell-send-command select)))))
+        (comint-send-string proc (inferior-haskell-wrap-decl select))
+        (slide-haskell-send-command "-- Multiline command evaluated"))
+      (slide-haskell-send-command select))))
 
 (defun slide-haskell-send-command (cmd)
   (inferior-haskell-send-command (inferior-haskell-process) cmd))

@@ -1,13 +1,10 @@
 * Foldable & Traversable
 
-(Building upon abstractions; Haskell Style)
-
  Lightning Talk for the:
  [[http://bfpg.org/][Brisbane Functional Programming Group]]
  2014-09-23
 
 [[http://twitter.com/benkolera][Ben Kolera (@benkolera)]]
-
 * Typeclasses
 #+BEGIN_SRC ditaa :file images/typeclasses.png
              +----------+             +---------+
@@ -30,19 +27,96 @@
 
 #+RESULTS:
 [[file:images/typeclasses.png]]
-
-
 * Foldable
 
-Something that has foldr (or foldMap)
+Something that has foldMap.
 
 #+BEGIN_SRC haskell
-fold ["ab","c"]
+data Tree a = Empty | Leaf a | Node (Tree a) a (Tree a) deriving Show
 
-instance Foldable [] where
-  foldr :: (a -> b -> b) -> b -> [a] -> b
-  foldr f z []     = z
-  foldr f z (x:xs) = x `f` foldr f z xs
+instance Foldable Tree where
+-- foldMap :: (Monoid m) => (a -> m) -> Tree a -> m
+   foldMap f Empty = mempty
+   foldMap f (Leaf x) = f x
+   foldMap f (Node l k r) = foldMap f l <> f k <> foldMap f r
+
+foldMap show (Node (Leaf 1) 2 (Leaf ))
 #+END_SRC
-* And this
-  And more stuff
+
+Each element is replaced with a monoid to accumulate the structure.
+* So what?
+
+We get a number of useful methods derived from our foldMap.
+
+#+BEGIN_SRC haskell
+:t sequence_
+sequence_ (Node Empty (putStrLn "Hello") (Leaf (putStrLn "world")))
+
+:t mapM_
+mapM_ print (Node (Leaf 1) 2 Empty)
+
+:t toList
+toList (Node (Leaf 1) 2 Empty)
+
+:t fold
+fold (Node (Leaf "a") "b" (Leaf "c"))
+#+END_SRC
+
+Also foldr,foldl,elem,find.
+* Traversable
+
+Foldable levelled up!
+
+#+BEGIN_SRC haskell
+deriving instance Functor Tree
+
+instance Traversable Tree where
+-- traverse :: Applicative f => (a -> f b) -> t a -> f (t b)
+   traverse f Empty        = pure Empty
+   traverse f (Leaf x)     = Leaf <$> f x
+   traverse f (Node l k r) = Node <$> traverse f l <*> f k <*> traverse f r
+#+END_SRC
+
+Run an applicative effect at each of the structure
+
+Keeps the structure rather than reducing it.
+* Now we don't reduce the structure
+
+Allows us to do some very handy things
+
+#+BEGIN_SRC haskell
+:t sequenceA
+sequenceA (Node Empty Nothing (Leaf (Just 4)))
+sequenceA (Node Empty (Just 2) (Leaf (Just 4)))
+
+traverse ((mfilter even) . Just) (Node (Leaf 1) 2 (Leaf 4))
+traverse ((mfilter even) . Just) (Node Empty 2 (Leaf 4))
+
+traverse readFile ["fileA","fileB","fileC"]
+
+#+END_SRC
+* The point to all of this
+
+We don't actually gain too much free code from these classes.
+
+But we do give a name to two very common patterns with data.
+
+At its crudest, you avoid some namespace collisions and save some imports.
+
+At its finest you can now right APIs that work on traversable giving the
+user the ability to use any traversable rather than the one you picked.
+
+E.g: The user can use Data.List or Data.List.NonEmpty based on their needs.
+
+Package base-prelude is an alternative prelude that hides the sequence,
+mapM, foldr,etc that are implemented around Data.List and exports the
+Foldable and Traversable ones.
+* The End!
+
+Thanks for Listening
+
+[[traversable.benkolera.com]]
+
+#+TITLE: Foldable & Traversable
+#+AUTHOR: Ben Kolera (@benkolera)
+#+EMAIL: ben.kolera@gmail.com
