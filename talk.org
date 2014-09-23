@@ -40,7 +40,7 @@ instance Foldable Tree where
    foldMap f (Leaf x) = f x
    foldMap f (Node l k r) = foldMap f l <> f k <> foldMap f r
 
-foldMap show (Node (Leaf 1) 2 (Leaf ))
+foldMap show (Node (Leaf 1) 2 (Leaf 3))
 #+END_SRC
 
 Each element is replaced with a monoid to accumulate the structure.
