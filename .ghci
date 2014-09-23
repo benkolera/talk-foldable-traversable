@@ -1,6 +1,0 @@
-import Prelude ()
-import BasePrelude hiding (traverse)
-import Data.Traversable (traverse)
-:set -XStandaloneDeriving
-:set -XDeriveFunctor
-:set prompt2 |
