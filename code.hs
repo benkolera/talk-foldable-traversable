@@ -27,7 +27,7 @@ exampleTree1 = (Node (Leaf 1) 2 (Node Empty 3 (Leaf 4)))
 example1 = foldMap Sum exampleTree1
 -- foldMap Sum (Leaf 1) <> Sum 2 <> foldMap Sum (Node Empty 3 (Leaf 4))
 -- Sum 1 <> Sum 2 <> mempty <> Sum 3 <> foldMap Sum (Leaf 4)
--- Sum 1 <> Sum 2 <> mempty <> Sum 4 <> Sum 4
+-- Sum 1 <> Sum 2 <> mempty <> Sum 3 <> Sum 4
 -- Sum 10
 
 example2 = mapM_ print exampleTree1
@@ -57,6 +57,7 @@ instance Traversable Tree where
 -- |
 -- >>> example6
 -- Node (Leaf "I'm from A") "I'm from B" Empty
+example6 :: IO (Tree String)
 example6 = traverse readFile (Node (Leaf "fileA") "fileB" Empty)
 
 -- Node
